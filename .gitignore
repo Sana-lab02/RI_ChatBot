@@ -1,0 +1,8 @@
+# Ignore backup code file
+Richatbot.py
+
+#ignore enviornment 
+.venv/
+
+# Ignore vscode
+.vscode/

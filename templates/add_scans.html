@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RI Helper – Add Scan</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="title-dropdown">
+            <button class="title-btn" onclick="toggleMenu()">RI Helper ▼</button>
+            <div class="title-menu" id="titleMenu">
+                <a href="/">Chat</a>
+                <a href="/add_scans">Add Scan</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="scan-container">
+        <h3>Update Scan Count</h3>
+
+        <form id="scan-form">
+            <label>Retailer</label>
+            <input type="text" id="retailer" placeholder="Retailer name">
+            <div id="retailer-suggestions" class="autocomplete-suggestions"></div>
+
+            <label>Scan Date</label>
+            <input 
+                type="text" 
+                id="scan-date" 
+                name="scan-date" 
+                placeholder="MM/DD/YYYY"
+                autocomplete="off"
+            >
+
+            <label>Scan Count</label>
+            <input type="number" id="scan-count" min="1" value="1">
+
+            <button type="submit">Add Scan</button>
+        </form>
+
+        <div id="scan-feedback"></div>
+    </div>
+
+<script>
+    function normalizeDate(input) {
+        input = input.trim();
+
+        if (/^\d{4}-\d{2}-\d{2}$/.test(input)) {
+            return input;
+        }
+
+        const match = input.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+        if (match) {
+            const [_, m, d, y] = match;
+            return `${y}-${m.padStart(2, "0")}-${d.padStart(2, "0")}`;
+        }
+
+        return null;
+    }
+
+
+    function toggleMenu() {
+        document.getElementById("titleMenu").classList.toggle("show");
+    }
+
+    document.addEventListener("click", function(e) {
+        const menu = document.getElementById("titleMenu");
+        const button = document.querySelector(".title-btn");
+        if (!menu.contains(e.target) && !button.contains(e.target)) {
+            menu.classList.remove("show");
+        }
+    });
+
+    const retailers = {{ retailers | tojson }};
+    const input = document.getElementById("retailer");
+    const suggestions = document.getElementById("retailer-suggestions");
+
+    input.addEventListener("input", function() {
+        const value = this.value.toLowerCase();
+        suggestions.innerHTML = "";
+        if (!value) return;
+
+        retailers
+            .filter(r => r.toLowerCase().includes(value))
+            .slice(0, 10)
+            .forEach(match => {
+                const div = document.createElement("div");
+                div.className = "autocomplete-suggestion";
+                div.innerText = match;
+                div.onclick = () => {
+                    input.value = match;
+                    suggestions.innerHTML = "";
+                };
+                suggestions.appendChild(div);
+            });
+    });
+
+    document.addEventListener("click", e => {
+        if (e.target !== input) suggestions.innerHTML = "";
+    });
+
+    document.getElementById("scan-form").addEventListener("submit", async e => {
+    e.preventDefault();
+
+    const retailer = input.value.trim();
+    const rawDate = document.getElementById("scan-date").value;
+    const scanDate = normalizeDate(rawDate);
+    const scanCount = parseInt(document.getElementById("scan-count").value);
+
+    if (!retailer || !scanDate || !scanCount) {
+        document.getElementById("scan-feedback").innerText =
+            "Enter retailer, valid date, and scan count.";
+        return;
+    }
+
+    const payload = {
+        retailer: retailer,
+        "scan-date": scanDate,
+        "scan-count": scanCount
+    };
+
+    const response = await fetch("/add_scans", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+    });
+
+    const data = await response.json();
+    document.getElementById("scan-feedback").innerText = data.message;
+    e.target.reset();
+});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+{
+    "login_issue": {
+        "description": "User cant login to App",
+        "triggers": [
+            "can't login",
+            "cannot login",
+            "login not working",
+            "password not working",
+            "password issues",
+            "cant login"
+        ],
+        "start": "wifi_connected",
+        "steps": [
+            {
+                "id": "wifi_connected",
+                "question": "Are you connectd to the WIFI?",
+                "type": "yes_no",
+                "yes": "correct_password",
+                "no": "connect_wifi"
+            },
+            {
+                "id": "connect_wifi",
+                "question": "Connect to the WIFI. Let me know when you are done",
+                "type": "ack",
+                "next": "wifi_retry"
+            },
+            {
+                "id": "wifi_retry",
+                "question": "Now that you are connected to the WIFI are you able to login?",
+                "type": "yes_no",
+                "yes": {
+                    "response": "Great! You are all set!",
+                    "end": true
+                },
+                "no": "correct_password"
+            },
+            {
+                "id": "correct_password",
+                "question": "Are you using the correct password: {{ri_app_password}}?",
+                "type": "yes_no",
+                "yes": {
+                    "response": "We will need to reset the password",
+                    "end": true
+                },
+                "no": {
+                    "response": "Try the password and try again. If it still isnt working then we will need to reset your password!",
+                    "end": true
+                }
+            }
+        ]
+    }
+}

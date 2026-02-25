@@ -1,0 +1,24 @@
+/* ===== ADMIN PAGE OVERRIDES ===== */
+/* Prevent global body:flex chat layout from affecting admin pages */
+body.admin-page {
+  display: block;      /* overrides your global body { display:flex } */
+  height: auto;
+  min-height: 100vh;
+  overflow: auto;      /* admin pages should scroll if needed */
+  background: #212121;
+}
+
+/* Centered version of admin container (for Create User page) */
+.admin-container.centered {
+  align-items: center; /* vertical center */
+}
+
+/* Fix gradient top bar positioning on admin-card */
+.admin-card {
+  position: relative; /* needed because you use .admin-card::before absolute */
+}
+
+/* Smaller admin card for forms (instead of max-width:1200px) */
+.admin-card--small {
+  max-width: 640px;
+}

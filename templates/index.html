@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RI Helper – Chat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-title">RI Helper</div>
+            <button class="new-chat-btn" onclick="startNewChat()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 5v14M5 12h14" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                New Chat
+            </button>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="section-title">Quick Actions</div>
+            
+            <div class="sidebar-card" onclick="triggerInventoryDashboard()">
+                <div class="card-icon" style="background: linear-gradient(135deg, #10b981 0%, #34d399 100%);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="card-content">
+                    <div class="card-title">Inventory</div>
+                    <div class="card-description">Check in/out devices</div>
+                </div>
+            </div>
+
+            <div class="sidebar-card" onclick="triggerUpdateRetailer()">
+                <div class="card-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="card-content">
+                    <div class="card-title">Update Retailer</div>
+                    <div class="card-description">Edit retailer information</div>
+                </div>
+            </div>
+
+            <div class="sidebar-card" onclick="triggerAddScan()">
+                <div class="card-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M9 9h6M9 12h6M9 15h4" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="card-content">
+                    <div class="card-title">Add Scan</div>
+                    <div class="card-description">Record new scan entry</div>
+                </div>
+            </div>
+
+            <div class="sidebar-card" onclick="triggerScanHistory()">
+                <div class="card-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 3v18h18" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M18 17V9M13 17v-6M8 17v-4" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="card-content">
+                    <div class="card-title">Scan History</div>
+                    <div class="card-description">View past scan records</div>
+                </div>
+            </div>
+
+            <div class="sidebar-card" onclick="triggerPredictScans()">
+                <div class="card-icon" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="card-content">
+                    <div class="card-title">Predict Scans</div>
+                    <div class="card-description">Forecast future scans</div>
+                </div>
+            </div>
+
+            <div class="sidebar-card" onclick="triggerParcelShipper()">
+                <div class="card-icon" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M7 21h10M12 3v18" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="card-content">
+                    <div class="card-title">Parcel Shipper</div>
+                    <div class="card-description">Generate shipping labels</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="user-profile" onclick="toggleUserMenu(event)">
+                <div class="user-avatar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="8" r="4"/>
+                        <path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/>
+                    </svg>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">{{ session.username or 'User' }}</div>
+                    <div class="user-status">{{ session.role or 'user' }}</div>
+                </div>
+                <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                    <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            
+            <div class="user-menu" id="userMenu">
+                {% if session.role == 'admin' %}
+                <a href="/admin/users/new" class="user-menu-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="8.5" cy="7" r="4"/>
+                        <line x1="20" y1="8" x2="20" y2="14"/>
+                        <line x1="23" y1="11" x2="17" y2="11"/>
+                    </svg>
+                    Create User
+                </a>
+                <a href="/admin/users" class="user-menu-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                    Manage Users
+                </a>
+                {% endif %}
+                <form method="POST" action="/logout" class="logout-form">
+                    <button type="submit" class="user-menu-item logout">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                            <polyline points="16 17 21 12 16 7"/>
+                            <line x1="21" y1="12" x2="9" y2="12"/>
+                        </svg>
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="navbar">
+            <button class="sidebar-toggle" onclick="toggleSidebar()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <line x1="3" y1="12" x2="21" y2="12" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="3" y1="6" x2="21" y2="6" stroke-width="2" stroke-linecap="round"/>
+                    <line x1="3" y1="18" x2="21" y2="18" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+            <div class="title-dropdown">
+                <button class="title-btn" onclick="toggleTitleMenu(event)">
+                    RI Helper
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                        <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <div class="title-menu" id="titleMenu">
+                    <a href="/">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M2 8.5C2 8.5 3.5 5 8 5C12.5 5 14 8.5 14 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            <circle cx="8" cy="8.5" r="2" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        Chat
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-container">
+            <div id="messages"></div>
+            <div id="wizard-container"></div>
+
+            <div class="input-container">
+                <div class="input-wrapper">
+                    <input id="user-input" type="text" placeholder="Ask a question..." autofocus>
+                    <button class="send-btn" onclick="sendMessage()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M12 19V5M12 5l-7 7M12 5l7 7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+// ========== MENU FUNCTIONS ==========
+function toggleUserMenu(event) {
+    event.stopPropagation();
+    event.preventDefault();
+    document.getElementById('userMenu').classList.toggle('show');
+    document.getElementById('titleMenu').classList.remove('show');
+}
+
+function toggleTitleMenu(event) {
+    event.stopPropagation();
+    event.preventDefault();
+    document.getElementById('titleMenu').classList.toggle('show');
+    document.getElementById('userMenu').classList.remove('show');
+}
+
+// Close menus when clicking outside
+window.addEventListener('click', function(e) {
+    const userProfile = e.target.closest('.user-profile');
+    const userMenu = document.getElementById('userMenu');
+    if (!userProfile && userMenu && !userMenu.contains(e.target)) {
+        userMenu.classList.remove('show');
+    }
+    
+    const titleBtn = e.target.closest('.title-btn');
+    const titleMenu = document.getElementById('titleMenu');
+    if (!titleBtn && titleMenu && !titleMenu.contains(e.target)) {
+        titleMenu.classList.remove('show');
+    }
+});
+
+// ========== SIDEBAR FUNCTIONS ==========
+function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("collapsed");
+}
+
+function startNewChat() {
+    document.getElementById("messages").innerHTML = "";
+    document.getElementById("wizard-container").innerHTML = "";
+}
+
+// ========== TRIGGER FUNCTIONS ==========
+function triggerInventoryDashboard() {
+    sendMessage("inventory dashboard");
+}
+
+function triggerUpdateRetailer() {
+    sendMessage("update retailer");
+}
+
+function triggerAddScan() {
+    sendMessage("add scan");
+}
+
+function triggerScanHistory() {
+    sendMessage("scan history");
+}
+
+function triggerPredictScans() {
+    sendMessage("predict scans");
+}
+
+function triggerParcelShipper() {
+    sendMessage("parcel shipper");
+}
+
+// ========== SEND MESSAGE ==========
+let typingElem = null;
+
+async function sendMessage(msg) {
+    const input = document.getElementById("user-input");
+    const message = msg || input.value.trim();
+    if (!message) return;
+
+    appendMessage("you", message);
+    if (!msg) input.value = "";
+
+    showTyping();
+
+    try {
+        const response = await fetch("/chat", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ message: message })
+        });
+
+        hideTyping();
+        const data = await response.json();
+        console.log("=== RESPONSE DATA ===", data);
+        
+        const reply = data.reply?.reply || data.reply;
+
+        if (reply?.type === "session form") {
+            console.log("✓ FORM DETECTED:", reply.form_id);
+            appendForm(reply);
+            return;
+        }
+
+        if (reply?.type === "wizard") {
+            renderWizardStep(reply);
+            return;
+        }
+
+        if (typeof reply === "string") {
+            appendMessage("bot", reply);
+        } else if (reply?.text) {
+            appendMessage("bot", reply.text, reply.image);
+        }
+    } catch (error) {
+        hideTyping();
+        console.error("Chat error:", error);
+        appendMessage("bot", "⚠ Failed to connect");
+    }
+}
+
+// Enter key handler
+document.getElementById("user-input").addEventListener("keydown", function(e){
+    if (e.key === "Enter") {
+        e.preventDefault();
+        sendMessage();
+    }
+});
+
+// ========== MESSAGE DISPLAY ==========
+function appendMessage(sender, message, imageData) {
+    const chat = document.getElementById("messages");
+    const wrapper = document.createElement("div");
+    wrapper.className = `message ${sender}`;
+
+    const avatar = document.createElement("div");
+    avatar.className = "avatar";
+    avatar.innerHTML = sender === "you" ? 
+        `<svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="7" r="3" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M4 17C4 14.2386 6.68629 12 10 12C13.3137 12 16 14.2386 16 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>` :
+        `<svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <rect x="3" y="3" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M7 9H13M7 12H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>`;
+
+    const bubble = document.createElement("div");
+    bubble.className = imageData ? "message-bubble wide" : "message-bubble";
+    
+    let content = message.replace(/\n/g, "<br>");
+    if (imageData) {
+        content += `<div class="chart-container"><img src="${imageData}" alt="Chart"></div>`;
+    }
+    bubble.innerHTML = content;
+
+    if (sender === "you") {
+        wrapper.appendChild(bubble);
+        wrapper.appendChild(avatar);
+    } else {
+        wrapper.appendChild(avatar);
+        wrapper.appendChild(bubble);
+    }
+
+    chat.appendChild(wrapper);
+    chat.scrollTop = chat.scrollHeight;
+}
+
+function showTyping() {
+    const chat = document.getElementById("messages");
+    if (typingElem) return;
+    
+    typingElem = document.createElement("div");
+    typingElem.className = "typing-indicator";
+    typingElem.innerHTML = `
+        <div class="avatar">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <rect x="3" y="3" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M7 9H13M7 12H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+        </div>
+        <div class="typing-dots">
+            <span></span><span></span><span></span>
+        </div>
+    `;
+    chat.appendChild(typingElem);
+    chat.scrollTop = chat.scrollHeight;
+}
+
+function hideTyping() {
+    if (typingElem && typingElem.parentNode) {
+        typingElem.parentNode.removeChild(typingElem);
+    }
+    typingElem = null;
+}
+
+// ========== FORM RENDERING ==========
+function appendForm(formData) {
+    console.log("Building form:", formData);
+    
+    const chat = document.getElementById("messages");
+    const wrapper = document.createElement("div");
+    wrapper.className = "message bot";
+    
+    const avatar = document.createElement("div");
+    avatar.className = "avatar";
+    avatar.innerHTML = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <rect x="3" y="3" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M7 9H13M7 12H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>`;
+    
+    const bubble = document.createElement("div");
+    bubble.className = "message-bubble update-form-container";
+    
+    if (formData.form_id === "inventory_dashboard") {
+        bubble.innerHTML = buildInventoryDashboard(formData);
+        wrapper.appendChild(avatar);
+        wrapper.appendChild(bubble);
+        chat.appendChild(wrapper);
+        chat.scrollTop = chat.scrollHeight;
+        setupDashboardButtons(bubble, formData);
+    } else {
+        bubble.innerHTML = buildStandardForm(formData);
+        wrapper.appendChild(avatar);
+        wrapper.appendChild(bubble);
+        chat.appendChild(wrapper);
+        chat.scrollTop = chat.scrollHeight;
+        setupFormAutocomplete(bubble, formData);
+        setupFormSubmit(bubble, formData);
+    }
+}
+
+function buildInventoryDashboard(formData) {
+    const stats = formData.stats || {};
+    const sections = formData.sections || [];
+    
+    let html = `<div class="form-title">${formData.title}</div>
+        <div class="inventory-stats">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #10b981 0%, #34d399 100%);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                        <line x1="8" y1="21" x2="16" y2="21"/>
+                        <line x1="12" y1="17" x2="12" y2="21"/>
+                    </svg>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value">${stats.iPads_in_house || 0}</div>
+                    <div class="stat-label">iPads Available</div>
+                    <div class="stat-total">of ${stats.iPads_total || 0} total</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="8" x2="12" y2="12"/>
+                        <line x1="12" y1="16" x2="12.01" y2="16"/>
+                    </svg>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value">${stats.Sensors_in_house || 0}</div>
+                    <div class="stat-label">Sensors Available</div>
+                    <div class="stat-total">of ${stats.Sensors_total || 0} total</div>
+                </div>
+            </div>
+        </div>`;
+    
+    sections.forEach(section => {
+        html += `<div class="inventory-section">
+            <div class="section-header">${section.title}</div>
+            <div class="section-items">`;
+        (section.items || []).forEach(item => {
+            html += `<div class="inventory-item">${item}</div>`;
+        });
+        html += `</div></div>`;
+    });
+    
+    const buttons = Array.isArray(formData.buttons[0]) ? formData.buttons[0] : formData.buttons;
+    html += `<div class="form-buttons">`;
+    buttons.forEach(btn => {
+        let className = 'form-submit';
+        if (btn.action === 'exit') className = 'form-exit';
+        if (btn.action === 'open_form' && (btn.target === 'inventory_add_device' || btn.target === 'inventory_remove_device')) {
+            className = 'form-admin';
+        }
+        html += `<button class="${className}" data-action="${btn.action}" data-target="${btn.target || ''}">${btn.text}</button>`;
+    });
+    html += `</div>`;
+    
+    return html;
+}
+
+function buildStandardForm(formData) {
+    let html = `<div class="form-title">${formData.title}</div>`;
+    
+    formData.fields.forEach((field, index) => {
+        const hasOptions = field.options && field.options.length > 0;
+        const isDropdown = field.type === 'dropdown';
+        
+        html += `<div class="form-group"><label>${field.label}</label>`;
+        
+        if (isDropdown) {
+            html += `<select class="field-${index} form-select">
+                <option value="">Select ${field.label}</option>`;
+            field.options.forEach(opt => {
+                html += `<option value="${opt}">${opt}</option>`;
+            });
+            html += `</select>`;
+        } else {
+            html += `<input type="${field.type || 'text'}" 
+                       class="field-${index} ${hasOptions ? 'autocomplete-input' : ''}" 
+                       placeholder="${field.placeholder || ''}"
+                       ${field.type === 'number' ? 'min="1" value="1"' : ''}>
+                ${hasOptions ? '<div class="autocomplete-suggestions"></div>' : ''}`;
+        }
+        html += `</div>`;
+    });
+    
+    if (formData.dynamic_fields) {
+        html += `<div class="form-group">
+            <label>${formData.dynamic_fields.label}</label>
+            <input type="text" class="dynamic-field autocomplete-input" 
+                   placeholder="${formData.dynamic_fields.placeholder || 'Type to search...'}">
+            <div class="autocomplete-suggestions"></div>
+        </div>
+        <div class="form-group">
+            <label>New Value</label>
+            <input type="text" class="value-input" placeholder="Enter new value">
+        </div>`;
+    }
+    
+    html += `<div class="form-buttons">
+        <button class="form-submit">${formData.submit_label || 'Submit'}</button>
+        <button class="form-exit">Cancel</button>
+    </div>
+    <div class="form-feedback"></div>`;
+    
+    return html;
+}
+
+// ========== FORM INTERACTIONS ==========
+function setupDashboardButtons(bubble, formData) {
+    bubble.querySelectorAll('button').forEach(btn => {
+        btn.onclick = async () => {
+            const action = btn.dataset.action;
+            const target = btn.dataset.target;
+            
+            if (action === 'exit') {
+                bubble.closest('.message').remove();
+            } else if (action === 'open_form') {
+                await sendMessage(`open_form ${target}`);
+            } else if (action === 'submit') {
+                await sendMessage("inventory dashboard");
+            }
+        };
+    });
+}
+
+function setupFormAutocomplete(bubble, formData) {
+    formData.fields.forEach((field, index) => {
+        if (field.options && field.options.length > 0 && field.type !== 'dropdown') {
+            const input = bubble.querySelector(`.field-${index}`);
+            if (input) setupAutocompleteWithData(input, field.options);
+        }
+    });
+    
+    if (formData.dynamic_fields && formData.dynamic_fields.options) {
+        const dynamicInput = bubble.querySelector('.dynamic-field');
+        if (dynamicInput) setupAutocompleteWithData(dynamicInput, formData.dynamic_fields.options);
+    }
+}
+
+function setupFormSubmit(bubble, formData) {
+    const submitBtn = bubble.querySelector('.form-submit');
+    const exitBtn = bubble.querySelector('.form-exit');
+    
+    if (submitBtn) {
+        submitBtn.onclick = async () => {
+            const feedback = bubble.querySelector('.form-feedback');
+            const data = {};
+            
+            formData.fields.forEach((field, index) => {
+                const input = bubble.querySelector(`.field-${index}`);
+                if (input) data[field.name] = input.value.trim();
+            });
+            
+            if (formData.dynamic_fields) {
+                const dynamicInput = bubble.querySelector('.dynamic-field');
+                const valueInput = bubble.querySelector('.value-input');
+                if (dynamicInput && valueInput) {
+                    data.field = dynamicInput.value.trim();
+                    data.value = valueInput.value.trim();
+                }
+            }
+            
+            const requiredFilled = formData.fields
+                .filter(f => !f.label.toLowerCase().includes('optional'))
+                .every((f, i) => {
+                    const val = data[f.name];
+                    return val && val.length > 0;
+                });
+            
+            if (!requiredFilled) {
+                if (feedback) {
+                    feedback.textContent = "⚠ Please fill all required fields";
+                    feedback.className = "form-feedback error";
+                }
+                return;
+            }
+            
+            try {
+                const response = await fetch("/chat", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({ 
+                        message: "",
+                        form_data: {
+                            form_id: formData.form_id,
+                            data: data
+                        }
+                    })
+                });
+                
+                const result = await response.json();
+                const reply = result.reply?.reply || result.reply;
+                
+                if (feedback) {
+                    feedback.textContent = result.reply?.text || formData.success_message || "✓ Success";
+                    feedback.className = "form-feedback success";
+                }
+                
+                setTimeout(() => {
+                    bubble.closest('.message').remove();
+                    if (reply?.type === "session form") {
+                        appendForm(reply);
+                    }
+                }, 1500);
+            } catch (error) {
+                console.error("Form submission error:", error);
+                if (feedback) {
+                    feedback.textContent = "⚠ Failed";
+                    feedback.className = "form-feedback error";
+                }
+            }
+        };
+    }
+
+    if (exitBtn) {
+        exitBtn.onclick = () => {
+            bubble.closest('.message').remove();
+        };
+    }
+
+    setTimeout(() => {
+        const firstInput = bubble.querySelector('.field-0');
+        if (firstInput) firstInput.focus();
+    }, 100);
+}
+
+function setupAutocompleteWithData(input, options) {
+    const suggestionsBox = input.nextElementSibling;
+    if (!suggestionsBox || !suggestionsBox.classList.contains('autocomplete-suggestions')) return;
+    
+    let selectedIndex = 0;
+
+    input.addEventListener('input', () => {
+        const query = input.value.toLowerCase();
+        suggestionsBox.innerHTML = "";
+        selectedIndex = 0;
+
+        if (!query) {
+            suggestionsBox.classList.remove('show');
+            return;
+        }
+
+        const filtered = options.filter(opt => opt.toLowerCase().includes(query));
+
+        if (filtered.length > 0) {
+            suggestionsBox.classList.add('show');
+            filtered.slice(0, 10).forEach((opt, i) => {
+                const div = document.createElement('div');
+                div.className = 'autocomplete-suggestion';
+                if (i === 0) div.classList.add('active');
+                div.textContent = opt;
+                
+                div.onclick = () => {
+                    input.value = opt;
+                    suggestionsBox.classList.remove('show');
+                    const nextInput = input.closest('.form-group').nextElementSibling?.querySelector('input, select');
+                    if (nextInput) nextInput.focus();
+                };
+                
+                suggestionsBox.appendChild(div);
+            });
+        } else {
+            suggestionsBox.classList.remove('show');
+        }
+    });
+
+    input.addEventListener('keydown', (e) => {
+        const suggestions = suggestionsBox.querySelectorAll('.autocomplete-suggestion');
+        
+        if (e.key === 'ArrowDown' && suggestions.length > 0) {
+            e.preventDefault();
+            selectedIndex = Math.min(selectedIndex + 1, suggestions.length - 1);
+            updateActive(suggestions, selectedIndex);
+        } else if (e.key === 'ArrowUp' && suggestions.length > 0) {
+            e.preventDefault();
+            selectedIndex = Math.max(selectedIndex - 1, 0);
+            updateActive(suggestions, selectedIndex);
+        } else if (e.key === 'Enter' && suggestions.length > 0) {
+            e.preventDefault();
+            suggestions[selectedIndex].click();
+        } else if (e.key === 'Tab' && suggestions.length > 0) {
+            e.preventDefault();
+            input.value = suggestions[selectedIndex].textContent;
+            suggestionsBox.classList.remove('show');
+        }
+    });
+
+    input.addEventListener('blur', () => {
+        setTimeout(() => suggestionsBox.classList.remove('show'), 200);
+    });
+}
+
+function updateActive(suggestions, index) {
+    suggestions.forEach((el, i) => {
+        el.classList.toggle('active', i === index);
+    });
+}
+
+// ========== WIZARD (if needed) ==========
+function renderWizardStep(stepData) {
+    const container = document.getElementById("wizard-container");
+    if (!container) return;
+    
+    container.innerHTML = "";
+    const wrapper = document.createElement("div");
+    wrapper.className = "wizard-step";
+    
+    const prompt = document.createElement("div");
+    prompt.className = "wizard-prompt";
+    prompt.innerText = stepData.prompt;
+    wrapper.appendChild(prompt);
+
+    if (stepData.control === "input") {
+        const input = document.createElement("input");
+        input.type = "text";
+        input.className = "wizard-input";
+        input.placeholder = "Enter value...";
+        wrapper.appendChild(input);
+        input.addEventListener("keydown", function(e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                submitWizardStep(input.value);
+            }
+        });
+    } else if (stepData.control === "dropdown") {
+        const select = document.createElement("select");
+        select.className = "wizard-dropdown";
+        const placeholder = document.createElement("option");
+        placeholder.value = "";
+        placeholder.innerText = "Select...";
+        select.appendChild(placeholder);
+        stepData.options.forEach((opt) => {
+            const option = document.createElement("option");
+            option.value = opt;
+            option.innerText = opt;
+            select.appendChild(option);
+        });
+        select.addEventListener("change", () => {
+            if (select.value) submitWizardStep(select.value);
+        });
+        wrapper.appendChild(select);
+    }
+
+    container.appendChild(wrapper);
+    const firstInput = wrapper.querySelector("input, select");
+    if (firstInput) firstInput.focus();
+}
+
+async function submitWizardStep(value) {
+    if (!value) return;
+    const container = document.getElementById("wizard-container");
+    container.innerHTML = "";
+    showTyping();
+    
+    try {
+        const response = await fetch("/chat", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ message: value })
+        });
+        
+        hideTyping();
+        const data = await response.json();
+        
+        if (data.reply?.type === "wizard") {
+            renderWizardStep(data.reply);
+        } else if (data.reply?.text) {
+            appendMessage("bot", data.reply.text);
+        } else if (typeof data.reply === "string") {
+            appendMessage("bot", data.reply);
+        }
+    } catch (error) {
+        hideTyping();
+        console.error("Wizard error:", error);
+    }
+}
+</script>
+
+</body>
+</html>
