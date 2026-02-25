@@ -158,7 +158,6 @@ class InventoryManager:
         if not dev:
             return False, f"Device not found for code: {code}"
 
-        # Only allow checkout if currently in_house (optional; change if you want)
         if dev.status != STATUS_IN_HOUSE:
             return False, f"{dev.type} {dev.scan_code} is not in-house (currently: {dev.availability_label})."
 
@@ -210,7 +209,7 @@ class InventoryManager:
         return True, f"✓ Checked in {dev.type} {dev.scan_code}. Marked in_house at {location}."
 
     # ---------------------------
-    # Session forms (your UI)
+    # Session forms
     # ---------------------------
 
     def dashboard_form(self, is_admin: bool = False) -> Dict[str, Any]:
@@ -414,7 +413,7 @@ class InventoryManager:
         if row is None:
             raise ValueError("row is None")
 
-        # sqlite3.Row supports dict-style access
+        
         if hasattr(row, "keys"):
             return Device(
                 id=int(row["id"]),
@@ -431,7 +430,7 @@ class InventoryManager:
                 notes=row["notes"],
             )
 
-        # fallback tuple ordering must match SELECT column order used in this module
+       
         return Device(
             id=int(row[0]),
             type=str(row[1]),
@@ -542,7 +541,7 @@ class InventoryManager:
             if cur.fetchone():
                 return {"text": "⚠ A device with that asset tag already exists."}
 
-        # New devices start as in_house
+        
         status = "in_house"
         assigned_to = None
 
