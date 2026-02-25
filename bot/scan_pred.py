@@ -33,7 +33,7 @@ class ScanPredictor:
 
         monthly = df.groupby("ds").size().reset_index(name="scan_count")
 
-        # FORCE continuous months
+       
         all_months = pd.date_range(
             monthly["ds"].min(),
             pd.Timestamp.today().replace(day=1),
@@ -63,7 +63,7 @@ class ScanPredictor:
                 "predicted_scan_count": [0]*len(forecast_months)
             })
 
-        # Rolling average (last 3 months)
+       
         rolling_avg = data["scan_count"].rolling(window=min(3, n_months), min_periods=1).mean().iloc[-1]
 
         # Activity factor
@@ -88,7 +88,7 @@ class ScanPredictor:
         else:
             activity_factor = 0.3
 
-        # Model logic
+        
         predictions = None
 
         if n_months >= 12:
@@ -107,13 +107,13 @@ class ScanPredictor:
                 predictions = forecast[["ds","yhat"]].rename(columns={"yhat":"predicted_scan_count"})
 
             except Exception as e:
-                # fallback to rolling average
+               
                 predictions = pd.DataFrame({
                     "ds": forecast_months,
                     "predicted_scan_count": np.round(rolling_avg * activity_factor)
                 })
         else:
-            # Short history: just rolling average with activity factor
+           
             predictions = pd.DataFrame({
                 "ds": forecast_months,
                 "predicted_scan_count": np.round(rolling_avg * activity_factor)
