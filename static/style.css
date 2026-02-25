@@ -986,7 +986,6 @@ input::placeholder {
         font-size: 20px;
     }
 }
-/* Add these styles to your existing style.css */
 
 /* ===== FORM SELECT DROPDOWN ===== */
 .form-select {
@@ -1052,7 +1051,6 @@ input::placeholder {
     transform: translateY(0);
 }
 
-/* Update existing form buttons to handle multiple admin buttons in dashboard */
 .form-buttons {
     display: flex;
     flex-wrap: wrap;
@@ -1060,7 +1058,7 @@ input::placeholder {
     margin-top: 20px;
 }
 
-/* Admin buttons in dashboard should be smaller */
+
 .inventory-section + .form-buttons .form-admin {
     flex: 1 1 calc(50% - 4px);
     min-width: 140px;
@@ -1068,7 +1066,7 @@ input::placeholder {
     font-size: 13px;
 }
 
-/* Regular action buttons in dashboard */
+
 .inventory-section + .form-buttons .form-submit,
 .inventory-section + .form-buttons .form-exit {
     flex: 1 1 calc(50% - 4px);
@@ -1626,7 +1624,7 @@ input::placeholder {
   position: absolute;
   left: 12px;
   right: 12px;
-  bottom: 72px;              /* sits above profile block */
+  bottom: 72px;              
   background: #1a1a1a;
   border: 1px solid #2f2f2f;
   border-radius: 12px;
@@ -1657,26 +1655,23 @@ input::placeholder {
 .logout-form { margin: 0; }
 
 /* ===== ADMIN PAGE OVERRIDES ===== */
-/* Prevent global body:flex chat layout from affecting admin pages */
 body.admin-page {
-  display: block;      /* overrides your global body { display:flex } */
+  display: block;      
   height: auto;
   min-height: 100vh;
-  overflow: auto;      /* admin pages should scroll if needed */
+  overflow: auto;      
   background: #212121;
 }
 
-/* Centered version of admin container (for Create User page) */
 .admin-container.centered {
-  align-items: center; /* vertical center */
+  align-items: center;
 }
 
-/* Fix gradient top bar positioning on admin-card */
+
 .admin-card {
-  position: relative; /* needed because you use .admin-card::before absolute */
+  position: relative; 
 }
 
-/* Smaller admin card for forms (instead of max-width:1200px) */
 .admin-card--small {
   max-width: 640px;
 }
