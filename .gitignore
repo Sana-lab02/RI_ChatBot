@@ -6,3 +6,21 @@ Richatbot.py
 
 # Ignore vscode
 .vscode/
+
+#Ignore parcels
+*.xlsx
+
+#Ignore Db
+*.db
+*.db-shm
+*.db-wal
+
+#Ignore db_import
+db_import.py
+admin_create
+bot/Keywords.py
+scan_count_todb.py
+unused.py
+
+
+
