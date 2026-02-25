@@ -849,7 +849,6 @@ class RetailBot:
         
         return "Scan added successfully."
     
-    # Add this method to your RetailBot class
 
     def add_scan_form(self):
         """
@@ -1004,8 +1003,6 @@ class RetailBot:
         if not retailer:
             return {"text": "⚠ Missing retailer."}
 
-        # Build updates from the payload you showed:
-        # {"retailer": "...", "field": "ri_app_password", "value": "xxxx"}
         field = (data.get("field") or "").strip()
         value_present = "value" in data
         value = data.get("value")
